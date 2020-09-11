@@ -13,8 +13,8 @@ function Wallets() {
     <>
       <WalletForm />
       {walletsStore.wallets.map((wallet) => (
-        <div key={wallet.id} onClick={() => walletsStore.removeWallet(wallet.id)}>
-          {wallet.name} ({wallet.currency})
+        <div key={wallet.id} onClick={() => walletsStore.addSpending(wallet.id)}>
+          {wallet.name} ({wallet.balance} {wallet.currency})
         </div>
       ))}
     </>

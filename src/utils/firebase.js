@@ -8,8 +8,8 @@ const firebaseConfig = {
   projectId: "finnance-pwa",
   storageBucket: "finnance-pwa.appspot.com",
   messagingSenderId: "153370378876",
-  appId: "1:153370378876:web:56d89480d3df2d07eb3ff9",
-  measurementId: "G-EM63HZSZBX"
+  appId: "1:153370378876:web:069c7be99febc702eb3ff9",
+  measurementId: "G-TSHJ3CWF0H"
 };
 
 firebase.initializeApp(firebaseConfig);

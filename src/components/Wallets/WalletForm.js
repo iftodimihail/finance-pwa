@@ -21,17 +21,19 @@ const currencies = [
 export default () => {
   const walletsStore = useWalletsStore();
   const [name, setName] = useState("");
+  const [balance, setBalance] = useState(0);
   const [currency, setCurrency] = useState(currencies[0].value);
 
   return (
     <>
       <Input onChange={(e) => setName(e.target.value)} />
+      <Input type="number" onChange={(e) => setBalance(e.target.value)} />
       <Select
         options={currencies}
         defaultValue={currencies[0].value}
         onChange={(val) => setCurrency(val)}
       />
-      <Button onClick={() => walletsStore.addWallet(name, currency)}>
+      <Button onClick={() => walletsStore.addWallet(name, currency, balance)}>
         Add Wallet
       </Button>
     </>
