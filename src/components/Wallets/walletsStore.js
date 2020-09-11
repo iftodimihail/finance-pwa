@@ -1,4 +1,4 @@
-import fb from "../../utils/firebase";
+import fb, { fbItemsParser } from "../../utils/firebase";
 
 export function createWalletsStore() {
   return {
@@ -11,11 +11,7 @@ export function createWalletsStore() {
           return [];
         }
 
-        Object.keys(walletsObject).map(
-          (walletId) =>
-            !this.wallets.some((wallet) => wallet.id === walletId) &&
-            this.wallets.push({ id: walletId, ...walletsObject[walletId] })
-        );
+        this.wallets = Array.from(fbItemsParser(walletsObject));
       });
     },
     addWallet(name, currency) {
@@ -30,7 +26,7 @@ export function createWalletsStore() {
     },
     removeWallet(id) {
       fb.wallets.child(id).remove();
-      this.wallets = this.wallets.filter((wallet) => wallet.id !== id);
+      this.getWallets();
     },
   };
 }

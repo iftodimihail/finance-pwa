@@ -4,12 +4,9 @@ import "./index.css";
 import "antd/dist/antd.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { WalletsProvider } from "./components/Wallets/WalletsContext";
 
 ReactDOM.render(
-  <WalletsProvider>
-    <App />
-  </WalletsProvider>,
+    <App />,
   document.getElementById("root")
 );
 

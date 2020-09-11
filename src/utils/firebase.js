@@ -22,5 +22,8 @@ const fb = {
   wallets
 };
 
-export default fb;
+export const fbItemsParser = (items) => {
+  return Object.keys(items).map(key => ({id: key, ...items[key]}));
+}
 
+export default fb;
