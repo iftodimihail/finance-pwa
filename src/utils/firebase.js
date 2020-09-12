@@ -1,5 +1,5 @@
 import firebase from "firebase/app";
-import "firebase/database";
+import "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC9bg43a1wBrpDN3VfD4BpqBeo9cQQqYfg",
@@ -14,16 +14,10 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const root = firebase.database().ref();
-const wallets = firebase.database().ref("wallets");
+const db = firebase.firestore();
 
-const fb = {
-  root,
-  wallets
-};
-
-export const fbItemsParser = (items) => {
-  return Object.keys(items).map(key => ({id: key, ...items[key]}));
+export {
+  db
 }
 
-export default fb;
+export default firebase;

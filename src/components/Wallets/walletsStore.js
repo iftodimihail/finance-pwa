@@ -1,41 +1,100 @@
-import fb, { fbItemsParser } from "../../utils/firebase";
+import firebase, { db } from "../../utils/firebase";
 import { nanoid } from "nanoid";
+
+const walletsCol = db.collection("wallets");
+const spendingsCol = db.collection("spendings");
 
 export function createWalletsStore() {
   return {
     wallets: [],
+    spendings: [],
+    currentWalletId: "",
 
-    getWallets() {
+    async getWallets() {
       this.wallets = [];
-      fb.wallets.on("value", (snapshot) => {
-        const walletsObject = snapshot.val();
-        if (!walletsObject) {
-          return [];
-        }
+      const querySnapshot = await walletsCol.get();
 
-        this.wallets = Array.from(fbItemsParser(walletsObject));
+      querySnapshot.forEach((doc) => {
+        this.wallets.push({ id: doc.id, ...doc.data() });
       });
     },
 
-    addWallet(name, currency, balance) {
-      const id = fb.wallets.push().key;
+    async addWallet(name, currency, balance) {
+      const payload = {
+        name,
+        currency,
+        balance,
+      };
 
-      fb.wallets.update({
-        [id]: {
-          name,
-          currency,
-          balance,
-        },
-      });
+      const spendigRef = await spendingsCol.add({});
+      payload.spending = spendigRef.id;
+
+      try {
+        const docRef = await walletsCol.add(payload);
+
+        this.wallets.push({
+          id: docRef.id,
+          ...payload,
+        });
+
+        console.log("Document written with ID: ", docRef.id);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
     },
 
-    removeWallet(id) {
-      fb.wallets.child(id).remove();
-      this.getWallets();
+    async removeWallet(id) {
+      try {
+        await walletsCol.doc(id).delete();
+
+        this.wallets.splice(
+          this.wallets.findIndex((wallet) => wallet.id === id),
+          1
+        );
+      } catch (err) {
+        console.log("Error deleting document: ", err);
+      }
     },
 
-    addSpending(walletId, spending = { name: "Mancare", type: "food", amount: 15 }) {
-      fb.wallets.child(walletId + "/spendings").update({ [nanoid()]: { ...spending } });
-    }
+    async getSpendings() {
+      this.spendings = [];
+      const currentWallet = this.wallets.find(
+        (wallet) => wallet.id === this.currentWalletId
+      );
+      const doc = await spendingsCol.doc(currentWallet.spending).get();
+
+      doc.data().items.forEach(spending => this.spendings.push({...spending}))
+    },
+
+    async addSpending(
+      walletId,
+      spending = { name: "Zara", type: "shopping", amount: 125 }
+    ) {
+      this.currentWalletId = walletId;
+      const currentWallet = this.wallets.find(
+        (wallet) => wallet.id === walletId
+      );
+
+      try {
+        await walletsCol.doc(walletId).update({
+          balance: firebase.firestore.FieldValue.increment(-spending.amount),
+        });
+
+        await spendingsCol.doc(currentWallet.spending).update(
+          {
+            items: firebase.firestore.FieldValue.arrayUnion({
+              id: nanoid(),
+              ...spending,
+            }),
+          },
+        );
+
+        currentWallet.balance -= spending.amount;
+
+        await this.getSpendings();
+      } catch (err) {
+        console.log("Error on adding spending: ", err);
+      }
+    },
   };
 }
