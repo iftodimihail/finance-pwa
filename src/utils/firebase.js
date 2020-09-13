@@ -15,9 +15,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
+const walletsCol = db.collection("wallets");
+const spendingsCol = db.collection("spendings");
+
 
 export {
-  db
+  walletsCol,
+  spendingsCol
 }
 
 export default firebase;

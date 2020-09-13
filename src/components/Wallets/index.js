@@ -15,23 +15,21 @@ function Wallets() {
     fetchData();
   }, [walletsStore]);
 
-  return useObserver(() => (
-    <>
-      <WalletForm />
-      {walletsStore.wallets.map((wallet) => (
-        <div
-          key={wallet.id}
-          onClick={() => walletsStore.addSpending(wallet.id)}
-        >
-          {wallet.name} ({wallet.balance} {wallet.currency})
-        </div>
-      ))}
-      <hr />
-      {walletsStore.spendings.map(spending => (
-        <div key={spending.id}>{spending.name}: {spending.amount}</div>
-      ))}
-    </>
-  ));
+  return useObserver(() => {
+    return (
+      <>
+        <WalletForm />
+        {walletsStore.wallets.map((wallet) => (
+          <div
+            key={wallet.id}
+            onClick={() => walletsStore.setCurrentWallet(wallet.id)}
+          >
+            {wallet.name} ({wallet.balance} {wallet.currency})
+          </div>
+        ))}
+      </>
+    );
+  });
 }
 
 export default Wallets;

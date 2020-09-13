@@ -1,13 +1,8 @@
-import firebase, { db } from "../../utils/firebase";
-import { nanoid } from "nanoid";
-
-const walletsCol = db.collection("wallets");
-const spendingsCol = db.collection("spendings");
+import { walletsCol, spendingsCol } from "../../utils/firebase";
 
 export function createWalletsStore() {
   return {
     wallets: [],
-    spendings: [],
     currentWalletId: "",
 
     async getWallets() {
@@ -56,45 +51,8 @@ export function createWalletsStore() {
       }
     },
 
-    async getSpendings() {
-      this.spendings = [];
-      const currentWallet = this.wallets.find(
-        (wallet) => wallet.id === this.currentWalletId
-      );
-      const doc = await spendingsCol.doc(currentWallet.spending).get();
-
-      doc.data().items.forEach(spending => this.spendings.push({...spending}))
-    },
-
-    async addSpending(
-      walletId,
-      spending = { name: "Zara", type: "shopping", amount: 125 }
-    ) {
-      this.currentWalletId = walletId;
-      const currentWallet = this.wallets.find(
-        (wallet) => wallet.id === walletId
-      );
-
-      try {
-        await walletsCol.doc(walletId).update({
-          balance: firebase.firestore.FieldValue.increment(-spending.amount),
-        });
-
-        await spendingsCol.doc(currentWallet.spending).update(
-          {
-            items: firebase.firestore.FieldValue.arrayUnion({
-              id: nanoid(),
-              ...spending,
-            }),
-          },
-        );
-
-        currentWallet.balance -= spending.amount;
-
-        await this.getSpendings();
-      } catch (err) {
-        console.log("Error on adding spending: ", err);
-      }
-    },
+    setCurrentWallet(id) {
+      this.currentWalletId = id;
+    }
   };
 }
