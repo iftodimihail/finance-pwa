@@ -15,7 +15,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-export const auth = firebase.auth();
+const auth = firebase.auth();
 
 const db = firebase.firestore();
 const walletsCol = db.collection("wallets");
@@ -23,6 +23,7 @@ const spendingsCol = db.collection("spendings");
 
 
 export {
+  auth,
   walletsCol,
   spendingsCol
 }

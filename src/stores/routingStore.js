@@ -6,9 +6,11 @@ import {
   RouterStore,
 } from "mobx-state-router";
 
-import WalletsPage from "../components/Wallets";
-import SpendingsPage from "../components/Spendings";
-import HomePage from "../components/Home";
+import WalletsPage from "../pages/Wallets";
+import SpendingsPage from "../pages/Spendings";
+import HomePage from "../pages/Home";
+import SignUpForm from "../pages/Auth/SignUp";
+import SignInForm from "../pages/Auth/SignIn";
 
 const notFound = createRouterState("notFound");
 
@@ -16,6 +18,14 @@ export const routes = [
   {
     name: "home",
     pattern: "/",
+  },
+  {
+    name: "signUp",
+    pattern: "/sign-up",
+  },
+  {
+    name: "signIn",
+    pattern: "/sign-in",
   },
   {
     name: "wallets",
@@ -40,6 +50,8 @@ const viewMap = {
   wallets: <WalletsPage />,
   spendings: <SpendingsPage />,
   home: <HomePage />,
+  signUp: <SignUpForm />,
+  signIn: <SignInForm />,
   notFound: <div>Not Found</div>,
 };
 
