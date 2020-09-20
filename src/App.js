@@ -1,14 +1,12 @@
 import React from "react";
-import WalletsPage from "./components/Wallets/main";
-import SpendingsPage from "./components/Spendings/main";
+import { RouterContext, RouterView } from "mobx-state-router";
+import { routerStore, viewMap } from "./stores/routingStore";
 
-// Routes
 function App() {
   return (
-    <>
-      <SpendingsPage />
-      <WalletsPage />
-    </>
+    <RouterContext.Provider value={routerStore}>
+      <RouterView viewMap={viewMap} />
+    </RouterContext.Provider>
   );
 }
 

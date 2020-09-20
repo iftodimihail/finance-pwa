@@ -1,4 +1,4 @@
-import firebase, { walletsCol, spendingsCol } from "../../utils/firebase";
+import firebase, { walletsCol, spendingsCol } from "../utils/firebase";
 
 export function createSpendingsStore() {
   return {

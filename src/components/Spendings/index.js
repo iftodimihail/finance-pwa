@@ -2,14 +2,10 @@ import React, { useEffect } from "react";
 import { useObserver } from "mobx-react";
 
 import SpendingForm from "./SpendingForm";
-
-import { useWalletsStore } from "../Wallets/WalletsContext";
-import { useSpendingsStore } from "./SpendingsContext";
+import { useStore } from "../../stores/StoresProvider";
 
 function Spendings() {
-  const walletsStore = useWalletsStore();
-  const spendingsStore = useSpendingsStore();
-  console.log(spendingsStore.spendings.map(spending => spending));
+  const { walletsStore, spendingsStore } = useStore();
 
   useEffect(() => {
     async function fetchData() {
@@ -20,7 +16,7 @@ function Spendings() {
   }, [spendingsStore, walletsStore.currentWalletId]);
 
   return useObserver(() => {
-    if(!walletsStore.currentWalletId) {
+    if (!walletsStore.currentWalletId) {
       return null;
     }
 

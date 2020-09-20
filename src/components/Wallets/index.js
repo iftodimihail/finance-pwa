@@ -3,10 +3,11 @@ import { useObserver } from "mobx-react";
 
 import WalletForm from "./WalletForm";
 
-import { useWalletsStore } from "./WalletsContext";
+import { useStore } from "../../stores/StoresProvider";
 
 function Wallets() {
-  const walletsStore = useWalletsStore();
+  const {walletsStore} = useStore();
+
   useEffect(() => {
     async function fetchData() {
       await walletsStore.getWallets();

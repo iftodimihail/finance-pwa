@@ -1,6 +1,4 @@
 import React from "react";
 import Index from "./index";
 
-export default () => (
-  <Index />
-);
+export default () => <Index />;

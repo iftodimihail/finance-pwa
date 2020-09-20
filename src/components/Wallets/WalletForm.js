@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Input, Select, Button } from "antd";
-
-import { useWalletsStore } from "./WalletsContext";
+import { useStore } from "../../stores/StoresProvider";
 
 const currencies = [
   {
@@ -19,7 +18,7 @@ const currencies = [
 ];
 
 export default () => {
-  const walletsStore = useWalletsStore();
+  const {walletsStore} = useStore();
   const [name, setName] = useState("");
   const [balance, setBalance] = useState(0);
   const [currency, setCurrency] = useState(currencies[0].value);

@@ -1,4 +1,5 @@
-import { walletsCol, spendingsCol } from "../../utils/firebase";
+import { routerStore } from "../stores/routingStore";
+import { walletsCol, spendingsCol } from "../utils/firebase";
 
 export function createWalletsStore() {
   return {
@@ -53,6 +54,7 @@ export function createWalletsStore() {
 
     setCurrentWallet(id) {
       this.currentWalletId = id;
+      routerStore.goTo("spendings");
     }
   };
 }
