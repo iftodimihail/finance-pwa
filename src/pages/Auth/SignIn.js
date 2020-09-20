@@ -17,6 +17,7 @@ function SignInForm() {
       <Input name="email" placeholder="Email" type="email" onChange={onInputChange} />
       <Input name="password" placeholder="Password" type="password" onChange={onInputChange} autoComplete="new-password"/>
       <Button onClick={() => authStore.signIn(formData)}>Sign In</Button>
+      <Button onClick={authStore.googleSignIn}>Google SignIn</Button>
     </div>
   );
 }
