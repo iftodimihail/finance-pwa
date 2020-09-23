@@ -32,7 +32,7 @@ export function createAuthStore() {
         routerStore.goTo("home");
       } catch (err) {
         notification.error({
-          message: err,
+          message: err.message,
         });
       }
     },
@@ -42,13 +42,6 @@ export function createAuthStore() {
 
       auth
         .signInWithPopup(provider)
-        .then(function (result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = result.credential.accessToken;
-          // The signed-in user info.
-          var user = result.user;
-          console.log(token, user);
-        })
         .catch(function (error) {
           var errorCode = error.code;
           var errorMessage = error.message;
