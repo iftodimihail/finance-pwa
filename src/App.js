@@ -5,11 +5,9 @@ import { Button } from "antd";
 import { useStore } from "./stores/StoresProvider";
 
 function App() {
-  const { authStore } = useStore();
   return (
     <RouterContext.Provider value={routerStore}>
       <RouterView viewMap={viewMap} />
-      <Button onClick={authStore.logOut}>Log Out</Button>
     </RouterContext.Provider>
   );
 }

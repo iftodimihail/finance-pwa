@@ -1,26 +1,52 @@
 import React, { useState } from "react";
-import { Button, Input } from "antd";
+import { Input } from "antd";
+import { RouterLink } from "mobx-state-router";
+
 import { useStore } from "../../stores/StoresProvider";
+import Form from "./components/Form";
+import Button from "../../components/Button";
+import Error from "./components/Error";
+import { useObserver } from "mobx-react";
 
 function SignUpForm() {
   const { authStore } = useStore();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    passwordConfirm: ""
+    passwordConfirm: "",
   });
 
-  const onInputChange = (e) => setFormData({
-    ...formData, [e.target.name] : e.target.value});
+  const onInputChange = (e) =>
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
 
-  return (
-    <div>
-      <Input name="email" placeholder="Email" type="email" onChange={onInputChange} />
-      <Input name="password" placeholder="Password" type="password" onChange={onInputChange} />
-      <Input name="passwordConfirm" placeholder="Confirm Password" type="password" onChange={onInputChange}/>
+  return useObserver(() => (
+    <Form>
+      <Input
+        name="email"
+        placeholder="Email"
+        type="email"
+        onChange={onInputChange}
+      />
+      <Input
+        name="password"
+        placeholder="Password"
+        type="password"
+        onChange={onInputChange}
+      />
+      <Input
+        name="passwordConfirm"
+        placeholder="Confirm Password"
+        type="password"
+        onChange={onInputChange}
+      />
+      {authStore.errors.length > 0 && <Error errors={authStore.errors} />}
       <Button onClick={() => authStore.signUp(formData)}>Sign Up</Button>
-    </div>
-  );
+      <RouterLink routeName="signIn">Sign in</RouterLink>
+    </Form>
+  ));
 }
 
 export default SignUpForm;

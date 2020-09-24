@@ -1,14 +1,29 @@
 import React, { useState } from "react";
-import { Button, Input } from "antd";
+import { Input } from "antd";
 import styled from "styled-components";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useStore } from "../../stores/StoresProvider";
 import { google_orange } from "../../utils/colors";
+import Button from "../../components/Button";
+import Color from "color";
+import { RouterLink } from "mobx-state-router";
+import Form from "./components/Form";
+import Error from "./components/Error";
+import { useObserver } from "mobx-react";
 
 const GoogleButton = styled(Button)`
   background: ${google_orange};
+  margin-top: 50px;
+
+  :hover {
+    background: ${Color(google_orange).darken(0.15)};
+  }
+
+  > svg {
+    margin-right: 10px;
+  }
 `;
 
 function SignInForm() {
@@ -24,8 +39,8 @@ function SignInForm() {
       [e.target.name]: e.target.value,
     });
 
-  return (
-    <div>
+  return useObserver(() => (
+    <Form>
       <Input
         name="email"
         placeholder="Email"
@@ -39,13 +54,16 @@ function SignInForm() {
         onChange={onInputChange}
         autoComplete="new-password"
       />
+
+      {authStore.errors.length > 0 && <Error errors={authStore.errors} />}
       <Button onClick={() => authStore.signIn(formData)}>Sign In</Button>
-      <GoogleButton type="primary" onClick={authStore.googleSignIn}>
+      <GoogleButton onClick={authStore.googleSignIn}>
         <FontAwesomeIcon icon={faGoogle} />
         Google
       </GoogleButton>
-    </div>
-  );
+      <RouterLink routeName="signUp">Sign up</RouterLink>
+    </Form>
+  ));
 }
 
 export default SignInForm;

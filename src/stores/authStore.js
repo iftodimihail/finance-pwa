@@ -7,8 +7,15 @@ export function createAuthStore() {
     errors: [],
 
     async signUp({ email, password, passwordConfirm }) {
+      this.errors = [];
+      
+      if (!(password && passwordConfirm)) {
+        this.errors.push({ message: "Please enter the credentials" });
+        return;
+      }
+
       if (password !== passwordConfirm) {
-        this.errors.push("Passwords must match");
+        this.errors.push({ message: "Passwords must match" });
         return;
       }
 
@@ -27,6 +34,8 @@ export function createAuthStore() {
     },
 
     async signIn({ email, password }) {
+      this.errors = [];
+
       try {
         await auth.signInWithEmailAndPassword(email, password);
         routerStore.goTo("home");
@@ -40,15 +49,13 @@ export function createAuthStore() {
     async googleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
 
-      auth
-        .signInWithPopup(provider)
-        .catch(function (error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          notification.error({
-            message: `Err ${errorCode}: ${errorMessage}`,
-          });
+      auth.signInWithPopup(provider).catch(function (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        notification.error({
+          message: `Err ${errorCode}: ${errorMessage}`,
         });
+      });
     },
 
     async logOut() {

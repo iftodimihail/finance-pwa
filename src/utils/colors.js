@@ -1,1 +1,50 @@
 export const google_orange = "#DB4437";
+
+export const red = "#EB5757";
+export const blue = "#206cd1";
+export const strongBlue = "#1d59ab";
+export const dodgerBlue = "#2681FA";
+export const darkBlue = "#091e3b";
+export const darkGreen = "#219653";
+export const green = "#57CA81";
+export const turmeric = "#A9B531";
+export const darkOrange = "#F2994A";
+export const orange = "#FF9435";
+export const yellow = "#E1B827";
+export const lightYellow = "#fffaec";
+export const highlightYellow = "#ffffcc";
+export const marine = "#004F9E";
+export const cyan = "#00ACC1";
+export const lightCyan = "#e6f7ff";
+export const concrete = "#78909C";
+export const pink = "#FFC0CB";
+export const turquoise = "#247893";
+
+export const lightBlue = "#5FD5F9";
+export const lightPurple = "#f2f1fa";
+export const winterMist = "#f2f2f2";
+export const whiteSmoke = "#f5f5f5";
+export const purple = "#8C198C";
+export const lightRed = "#FFE3E3";
+
+export const info = "#409BF6";
+export const success = "#219653";
+export const warning = "#F2994A";
+export const error = "#EB5757";
+
+export const black = "#000";
+export const nearBlack = "#111";
+export const darkGray = "#333";
+export const midGray = "#555";
+export const mediumLightGray = "#bbb";
+export const lightMidGray = "#ddd";
+export const gray = "#777";
+export const silver = "#999";
+export const lightSilver = "#aaa";
+export const moonGray = "#ccc";
+export const lightGray = "#eee";
+export const nearWhite = "#f4f4f4";
+export const lightWhite = "#fafafa";
+export const white = "#fff";
+export const navy = "#5fd5f9";
+export const gold = "#D4AF37";
