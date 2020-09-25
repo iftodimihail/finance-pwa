@@ -1,14 +1,15 @@
 import { notification } from "antd";
-import firebase, { auth } from "../utils/firebase";
+import firebase, { auth, usersCol } from "../utils/firebase";
 import { routerStore } from "./routingStore";
 
 export function createAuthStore() {
   return {
     errors: [],
+    user: null,
 
     async signUp({ email, password, passwordConfirm }) {
       this.errors = [];
-      
+
       if (!(password && passwordConfirm)) {
         this.errors.push({ message: "Please enter the credentials" });
         return;
@@ -20,7 +21,8 @@ export function createAuthStore() {
       }
 
       try {
-        await auth.createUserWithEmailAndPassword(email, password);
+        const result = await auth.createUserWithEmailAndPassword(email, password);
+        console.log(result.user);
         notification.success({
           message: "Account has been created",
         });
@@ -49,7 +51,15 @@ export function createAuthStore() {
     async googleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
 
-      auth.signInWithPopup(provider).catch(function (error) {
+      auth.signInWithPopup(provider).then(({ user, additionalUserInfo }) => {
+        this.user = user;
+        if (additionalUserInfo.isNewUser) {
+          usersCol.add({
+            email: user.email,
+            uid: user.uid,
+          });
+        }
+      }).catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
         notification.error({
@@ -58,10 +68,10 @@ export function createAuthStore() {
       });
     },
 
-    async logOut() {
+    async logout() {
       try {
-        console.log("aici");
         await auth.signOut();
+        this.user = null;
         routerStore.goTo("signIn");
       } catch (err) {
         notification.error({

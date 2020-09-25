@@ -20,12 +20,13 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const walletsCol = db.collection("wallets");
 const spendingsCol = db.collection("spendings");
-
+const usersCol = db.collection("users");
 
 export {
   auth,
   walletsCol,
-  spendingsCol
+  spendingsCol,
+  usersCol
 }
 
 export default firebase;

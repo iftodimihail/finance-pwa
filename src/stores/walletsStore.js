@@ -1,5 +1,5 @@
 import { routerStore } from "../stores/routingStore";
-import { walletsCol, spendingsCol } from "../utils/firebase";
+import { walletsCol, spendingsCol, auth } from "../utils/firebase";
 
 export function createWalletsStore() {
   return {
@@ -8,7 +8,7 @@ export function createWalletsStore() {
 
     async getWallets() {
       this.wallets = [];
-      const querySnapshot = await walletsCol.get();
+      const querySnapshot = await walletsCol.where("userUid", "==", auth.currentUser.uid).get();
 
       querySnapshot.forEach((doc) => {
         this.wallets.push({ id: doc.id, ...doc.data() });
@@ -17,6 +17,7 @@ export function createWalletsStore() {
 
     async addWallet(name, currency, balance) {
       const payload = {
+        userUid: auth.currentUser.uid,
         name,
         currency,
         balance,
@@ -27,7 +28,6 @@ export function createWalletsStore() {
 
       try {
         const docRef = await walletsCol.add(payload);
-
         this.wallets.push({
           id: docRef.id,
           ...payload,
