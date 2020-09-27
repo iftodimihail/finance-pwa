@@ -18,7 +18,7 @@ const spendingTypes = [
 ];
 
 export default () => {
-  const { spendingsStore, walletStore } = useStore();
+  const { spendingsStore } = useStore();
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
   const [type, setSpendingType] = useState(spendingTypes[0].value);
@@ -34,7 +34,7 @@ export default () => {
       />
       <Button
         onClick={() =>
-          spendingsStore.addSpending(walletStore.currentWalletId, {
+          spendingsStore.addSpending({
             name,
             type,
             amount,

@@ -24,10 +24,7 @@ function Spendings() {
       <>
         <SpendingForm />
         {spendingsStore.spendings.map((spending) => (
-          <div
-            key={spending.id}
-            // onClick={() => walletsStore.addSpending(wallet.id)}
-          >
+          <div key={spending.id}>
             {spending.name} {spending.amount} ({spending.type})
           </div>
         ))}

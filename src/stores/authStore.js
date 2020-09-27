@@ -78,6 +78,7 @@ export function createAuthStore() {
       try {
         await auth.signOut();
         this.user = null;
+        localStorage.clear();
         routerStore.goTo("signIn");
       } catch (err) {
         notification.error({

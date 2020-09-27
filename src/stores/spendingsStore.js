@@ -3,7 +3,9 @@ import firebase, { walletsCol, spendingsCol } from "../utils/firebase";
 export function createSpendingsStore() {
   return {
     spendings: [],
-    async getSpendings(walletId) {
+    async getSpendings() {
+      const walletId = localStorage.getItem("preferredWallet");
+
       if (!walletId) {
         return;
       }
@@ -17,8 +19,9 @@ export function createSpendingsStore() {
       });
     },
 
-    async addSpending(walletId, spending) {
+    async addSpending(spending) {
       try {
+        const walletId = localStorage.getItem("preferredWallet");
         await walletsCol.doc(walletId).update({
           balance: firebase.firestore.FieldValue.increment(-spending.amount),
         });
