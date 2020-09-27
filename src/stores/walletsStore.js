@@ -1,5 +1,5 @@
 import { routerStore } from "../stores/routingStore";
-import { walletsCol, spendingsCol, auth } from "../utils/firebase";
+import { walletsCol, spendingsCol, auth, usersCol } from "../utils/firebase";
 
 export function createWalletsStore() {
   return {
@@ -8,7 +8,13 @@ export function createWalletsStore() {
 
     async getWallets() {
       this.wallets = [];
-      const querySnapshot = await walletsCol.where("userUid", "==", auth.currentUser.uid).get();
+      const querySnapshot = await walletsCol
+        .where(
+          "userUid",
+          "==",
+          auth?.currentUser?.uid || JSON.parse(localStorage.getItem("user")).uid
+        )
+        .get();
 
       querySnapshot.forEach((doc) => {
         this.wallets.push({ id: doc.id, ...doc.data() });
@@ -52,9 +58,12 @@ export function createWalletsStore() {
       }
     },
 
-    setCurrentWallet(id) {
+    async setCurrentWallet(id) {
       this.currentWalletId = id;
+      await usersCol.doc(auth.currentUser.uid).update({
+        preferredWallet: id,
+      });
       routerStore.goTo("spendings");
-    }
+    },
   };
 }

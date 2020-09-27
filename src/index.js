@@ -16,9 +16,7 @@ ReactDOM.render(
   </StoreProvider>,
   document.getElementById("root"), () =>
   auth.onAuthStateChanged((user) => {
-    if (user) {
-      routerStore.goTo("home");
-    } else {
+    if (!user) {
       routerStore.goTo("signIn");
     }
   })

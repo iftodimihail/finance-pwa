@@ -51,14 +51,20 @@ export function createAuthStore() {
     async googleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
 
-      auth.signInWithPopup(provider).then(({ user, additionalUserInfo }) => {
-        this.user = user;
+      auth.signInWithPopup(provider).then(async ({ user, additionalUserInfo }) => {
         if (additionalUserInfo.isNewUser) {
-          usersCol.add({
+          usersCol.doc(user.uid).set({
             email: user.email,
             uid: user.uid,
           });
         }
+
+        const userRef = await usersCol.doc(user.uid).get();
+        this.user = userRef.data();
+        localStorage.setItem("preferredWallet", this.user.preferredWallet);
+        localStorage.setItem("user", JSON.stringify(this.user));
+
+        routerStore.goTo("home");
       }).catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;

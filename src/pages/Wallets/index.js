@@ -6,14 +6,16 @@ import WalletForm from "./WalletForm";
 import { useStore } from "../../stores/StoresProvider";
 
 function Wallets() {
-  const {walletsStore} = useStore();
+  const { walletsStore } = useStore();
 
   useEffect(() => {
     async function fetchData() {
       await walletsStore.getWallets();
     }
 
-    fetchData();
+    if (walletsStore.wallets.length === 0) {
+      fetchData();
+    }
   }, [walletsStore]);
 
   return useObserver(() => {

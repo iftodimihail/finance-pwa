@@ -27,7 +27,7 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  box-shadow: inset 0px 0px 4px 0px rgba(140, 140, 140, 0.5);
+  box-shadow: 0px 0px 4px 0px rgba(140, 140, 140, 0.5);
 `;
 
 export default ({ children }) => (

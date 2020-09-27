@@ -1,19 +1,38 @@
-import React from "react";
-import { useRouterStore } from "mobx-state-router";
+import React, { useEffect } from "react";
+import { Select } from "antd";
+
+import { useStore } from "../../stores/StoresProvider";
+import { useObserver } from "mobx-react";
 
 function HomePage() {
-  const routerStore = useRouterStore();
+  const { walletsStore } = useStore();
 
-  const handleClick = () => {
-    routerStore.goTo("wallets");
-  };
+  useEffect(() => {
+    async function fetchData() {
+      await walletsStore.getWallets();
+    }
 
-  return (
-    <div>
-      <h1>Home</h1>
-      <button onClick={handleClick}>Go to Wallets</button>
-    </div>
-  );
+    if (walletsStore.wallets.length === 0) {
+      fetchData();
+    }
+  }, [walletsStore]);
+
+  return useObserver(() => {
+    const parsedWallets = walletsStore.wallets.map((wallet) => ({
+      label: wallet.name,
+      value: wallet.id,
+    }));
+
+    return (
+      <div>
+        <h1>Home</h1>
+        <Select
+          options={parsedWallets}
+          defaultValue={localStorage.getItem("preferredWallet")}
+        />
+      </div>
+    );
+  });
 }
 
 export default HomePage;
